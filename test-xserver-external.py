@@ -1,0 +1,111 @@
+# https://carlo-hamalainen.net/2013/01/24/python-ssl-socket-echo-test-with-self-signed-certificate/
+# 
+#
+
+import socket, ssl, pprint, struct
+import hashlib
+import XSModelMessages_External_pb2, XSMessages_External_pb2
+import CommonModelMessages_External_pb2, CommonMessages_External_pb2
+
+def encode_length(data):
+    """Encode a data length as int32"""
+    return struct.pack('>I', len(data))
+
+def decode_length(data):
+    """ Decode a protobuf length as int32 """
+    return struct.unpack('>I', data)[0]
+
+def send_message(conn, msg):
+    """ Send a message, prefixed with its size, to a TPC/IP socket """
+    data = msg.SerializeToString()
+    size = encode_length(data)
+    conn.sendall(size + data)
+
+def recv_message(conn, msg_type, msg_type_id):
+    """ Receive a message, prefixed with its size, from a TCP/IP socket """
+    # Receive the size of the message data
+    data = b''
+    while True:
+        try:
+            data += conn.recv(4)
+            size = decode_length(data)
+            break
+        except IndexError:
+            pass
+    # Receive the message data
+    data = conn.recv(size)
+    # Decode the message
+    msg = CommonMessages_External_pb2.ProtoMessage()
+    msg.ParseFromString(data)
+    print("Received a message:")
+    print(msg)
+    res = msg_type()
+    if msg.payloadType == msg_type_id:
+        res.ParseFromString(msg.payload)
+        return res
+    else:
+        print("Warnigin!.. Was expected a message with thre payload type", msg_type_id)
+        return data
+hostname = 'spotwaresandbox1.cxchange.com'
+# hostname = '127.0.0.1'
+hostport = 5011
+
+auth_req = XSMessages_External_pb2.ProtoManagerAuthReq()
+auth_req.login = 10001
+auth_req.passwordHash = hashlib.md5("3akbNf".encode('utf-8')).hexdigest()
+# auth_req.login = 1000
+# auth_req.passwordHash = hashlib.md5("1".encode('utf-8')).hexdigest()
+auth_req.plantId = 'spotwaresandbox1'
+auth_req.environmentName = 'x'
+# auth_req.plantId = "local".encode('utf-8')
+# auth_req.environmentName = "local".encode('utf-8')
+
+print(auth_req)
+
+msg = CommonMessages_External_pb2.ProtoMessage()
+msg.payloadType = XSModelMessages_External_pb2.PROTO_MANAGER_AUTH_REQ
+msg.clientMsgId = "any-random-string"
+msg.payload = auth_req.SerializeToString()
+
+context = ssl.create_default_context()
+
+with socket.create_connection((hostname, hostport)) as sock:
+    # with ssl.wrap_socket(sock, ca_certs="certs.pem", cert_reqs=ssl.CERT_REQUIRED, server_side=False) as ssock:
+    with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        print(repr(ssock.getpeername()))
+        print(ssock.cipher())
+        print(pprint.pformat(ssock.getpeercert()))
+        print('Connected to RPC server', ssock.version())
+        res = recv_message(ssock, XSMessages_External_pb2.ProtoHelloEvent, XSModelMessages_External_pb2.PROTO_HELLO_EVENT)
+        print('Received a Hello Event: \n%s' % res)
+        send_message(ssock, msg)
+        res = recv_message(ssock, XSMessages_External_pb2.ProtoManagerAuthRes, XSModelMessages_External_pb2.PROTO_MANAGER_AUTH_RES)
+        print('Received a ManagerAuth Response: \n%s' % res)
+        print('Communication with RPC server is completed')
+
+# with socket.create_connection((hostname, hostport)) as sock:
+#     with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+#         print(ssock.version())
+#         send_message(ssock, auth_req)
+#         res = recv_message(ssock, XSMessages_External_pb2.ProtoManagerAuthRes)
+#         # Check the connection was successful
+#         print('Connected to RPC server')
+#         print(res)
+
+# $k = new ProtoManagerAuthReq();
+# $k->setLogin(10001);
+# $k->setPasswordHash(md5('3akbNf'));
+# $k->setPlantId('spotwaresandbox1');
+# $k->setEnvironmentName('x');
+# $k->printDebugString();
+# $pl = $k->serializeToString();
+# file_put_contents('./test.raw', $pl);
+
+# $fp = fsockopen('ssl://spotwaresandbox1.cxchange.com', 5034);
+# $fpp = fputs($fp, $pl);
+# $out = "";
+# while (!feof($fp)) {
+#   $out .= fread($fp, 8);
+# }
+# var_dump($out);
+# fclose($fp);
