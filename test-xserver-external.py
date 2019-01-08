@@ -47,6 +47,7 @@ def recv_message(conn, msg_type, msg_type_id):
         print("Warnigin!.. Was expected a message with thre payload type", msg_type_id)
         return data
 
+# Please define the right values for following variables:
 hostname = 'localhost'
 port = 5011
 plant_id = 'PLANT_ID'
@@ -59,9 +60,6 @@ auth_req.login = login
 auth_req.passwordHash = hashlib.md5(password.encode('utf-8')).hexdigest()
 auth_req.plantId = plant_id
 auth_req.environmentName = env_name
-# auth_req.plantId = "local".encode('utf-8')
-# auth_req.environmentName = "local".encode('utf-8')
-
 print(auth_req)
 
 msg = CommonMessages_External_pb2.ProtoMessage()
