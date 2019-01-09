@@ -15,6 +15,7 @@ This project demonstrates a way to communicate with xServer by a manager protoco
 
 To start the script use python3:
 
+```shell
     ~/python-test$ python3 test-xserver-external.py
     ...
     Connected to RPC server TLSv1.2
@@ -84,6 +85,5 @@ To start the script use python3:
     permission: ROLE_TRADING_ON_BEHALF
 
     Communication with RPC server is completed
-
-
+```
 
