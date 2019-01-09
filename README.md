@@ -17,7 +17,11 @@ To start the script use python3:
 
 ```shell
     ~/python-test$ python3 test-xserver-external.py
-    ...
+```
+
+the tail of the output should look like:
+
+```
     Connected to RPC server TLSv1.2
     Received a message:
     payloadType: 990
