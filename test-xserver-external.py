@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 # https://carlo-hamalainen.net/2013/01/24/python-ssl-socket-echo-test-with-self-signed-certificate/
 # 
 #
+=======
+# Some useful links:
+# - https://carlo-hamalainen.net/2013/01/24/python-ssl-socket-echo-test-with-self-signed-certificate/
+# 
+>>>>>>> master
 
 import socket, ssl, pprint, struct
 import hashlib
@@ -46,17 +52,22 @@ def recv_message(conn, msg_type, msg_type_id):
     else:
         print("Warnigin!.. Was expected a message with thre payload type", msg_type_id)
         return data
+<<<<<<< HEAD
 hostname = 'spotwaresandbox1.cxchange.com'
 # hostname = '127.0.0.1'
-hostport = 5011
+port = 5011
+plant_id = 'spotwaresandbox1'
+env_name = 'x'
+login = 10001
+password = '1'
 
 auth_req = XSMessages_External_pb2.ProtoManagerAuthReq()
-auth_req.login = 10001
-auth_req.passwordHash = hashlib.md5("3akbNf".encode('utf-8')).hexdigest()
+auth_req.login = login
+auth_req.passwordHash = hashlib.md5(password.encode('utf-8')).hexdigest()
+auth_req.plantId = plant_id
+auth_req.environmentName = env_name
 # auth_req.login = 1000
 # auth_req.passwordHash = hashlib.md5("1".encode('utf-8')).hexdigest()
-auth_req.plantId = 'spotwaresandbox1'
-auth_req.environmentName = 'x'
 # auth_req.plantId = "local".encode('utf-8')
 # auth_req.environmentName = "local".encode('utf-8')
 
@@ -69,7 +80,7 @@ msg.payload = auth_req.SerializeToString()
 
 context = ssl.create_default_context()
 
-with socket.create_connection((hostname, hostport)) as sock:
+with socket.create_connection((hostname, port)) as sock:
     # with ssl.wrap_socket(sock, ca_certs="certs.pem", cert_reqs=ssl.CERT_REQUIRED, server_side=False) as ssock:
     with context.wrap_socket(sock, server_hostname=hostname) as ssock:
         print(repr(ssock.getpeername()))
