@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-# https://carlo-hamalainen.net/2013/01/24/python-ssl-socket-echo-test-with-self-signed-certificate/
-# 
-#
-=======
 # Some useful links:
 # - https://carlo-hamalainen.net/2013/01/24/python-ssl-socket-echo-test-with-self-signed-certificate/
 # 
->>>>>>> master
 
 import socket, ssl, pprint, struct
 import hashlib
@@ -52,7 +46,7 @@ def recv_message(conn, msg_type, msg_type_id):
     else:
         print("Warnigin!.. Was expected a message with thre payload type", msg_type_id)
         return data
-<<<<<<< HEAD
+
 hostname = 'spotwaresandbox1.cxchange.com'
 # hostname = '127.0.0.1'
 port = 5011
