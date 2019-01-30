@@ -71,8 +71,7 @@ print(token_req)
 context = ssl.create_default_context()
 
 with socket.create_connection((hostname, port)) as sock:
-    with ssl.wrap_socket(sock, ca_certs="certs.pem", cert_reqs=ssl.CERT_REQUIRED, server_side=False) as ssock:
-    # with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+    with context.wrap_socket(sock, server_hostname=hostname) as ssock:
         print(repr(ssock.getpeername()))
         print(ssock.cipher())
         print(pprint.pformat(ssock.getpeercert()))
