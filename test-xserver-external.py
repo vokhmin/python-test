@@ -63,6 +63,7 @@ auth_req.environmentName = env_name.encode('utf-8')
 
 print(auth_req)
 
+# you sould to get token executing the script test-xserver-external.py
 token_req = XSMessages_External_pb2.ProtoManagerGetAuthTokenReq()
 
 print(token_req)
