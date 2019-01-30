@@ -17,6 +17,7 @@ def decode_length(data):
 
 def send_message(conn, msg):
     """ Send a message, prefixed with its size, to a TPC/IP socket """
+    print("Try to send the request: \n%s" % msg)
     data = msg.SerializeToString()
     size = encode_length(data)
     conn.sendall(size + data)
@@ -47,30 +48,29 @@ def recv_message(conn, msg_type, msg_type_id):
         print("Warnigin!.. Was expected a message with thre payload type", msg_type_id)
         return data
 
-hostname = 'spotwaresandbox1.cxchange.com'
-# hostname = '127.0.0.1'
 port = 5011
-plant_id = 'spotwaresandbox1'
+# hostname = '127.0.0.1'
+hostname = 'proxy.spotware.cxchange.com'
+plant_id = 'spotwarecxchange'
 env_name = 'x'
-login = 10001
-password = '1'
+login = 10047
+password = 'Qwe'
+# plant_id = 'local'
+# env_name = 'local'
+# login = 1000
+# password = '1'
 
 auth_req = XSMessages_External_pb2.ProtoManagerAuthReq()
 auth_req.login = login
 auth_req.passwordHash = hashlib.md5(password.encode('utf-8')).hexdigest()
-auth_req.plantId = plant_id
-auth_req.environmentName = env_name
-# auth_req.login = 1000
-# auth_req.passwordHash = hashlib.md5("1".encode('utf-8')).hexdigest()
-# auth_req.plantId = "local".encode('utf-8')
-# auth_req.environmentName = "local".encode('utf-8')
+auth_req.plantId = plant_id.encode('utf-8')
+auth_req.environmentName = env_name.encode('utf-8')
 
 print(auth_req)
 
-msg = CommonMessages_External_pb2.ProtoMessage()
-msg.payloadType = XSModelMessages_External_pb2.PROTO_MANAGER_AUTH_REQ
-msg.clientMsgId = "any-random-string"
-msg.payload = auth_req.SerializeToString()
+token_req = XSMessages_External_pb2.ProtoManagerGetAuthTokenReq()
+
+print(token_req)
 
 context = ssl.create_default_context()
 
@@ -83,9 +83,23 @@ with socket.create_connection((hostname, port)) as sock:
         print('Connected to RPC server', ssock.version())
         res = recv_message(ssock, XSMessages_External_pb2.ProtoHelloEvent, XSModelMessages_External_pb2.PROTO_HELLO_EVENT)
         print('Received a Hello Event: \n%s' % res)
+
+        msg = CommonMessages_External_pb2.ProtoMessage()
+        msg.payloadType = XSModelMessages_External_pb2.PROTO_MANAGER_AUTH_REQ
+        msg.clientMsgId = "any-random-string"
+        msg.payload = auth_req.SerializeToString()
         send_message(ssock, msg)
         res = recv_message(ssock, XSMessages_External_pb2.ProtoManagerAuthRes, XSModelMessages_External_pb2.PROTO_MANAGER_AUTH_RES)
         print('Received a ManagerAuth Response: \n%s' % res)
+
+        msg = CommonMessages_External_pb2.ProtoMessage()
+        msg.payloadType = XSModelMessages_External_pb2.PROTO_MANAGER_GET_AUTH_TOKEN_REQ
+        msg.clientMsgId = "any-random-string-2"
+        msg.payload = auth_req.SerializeToString()
+        send_message(ssock, msg)
+        res = recv_message(ssock, XSMessages_External_pb2.ProtoManagerGetAuthTokenRes, XSModelMessages_External_pb2.PROTO_MANAGER_GET_AUTH_TOKEN_RES)
+        print('Received a ManagerAuth Response: \n%s' % res)
+
         print('Communication with RPC server is completed')
 
 # with socket.create_connection((hostname, hostport)) as sock:
