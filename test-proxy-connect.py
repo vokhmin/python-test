@@ -131,8 +131,7 @@ handshake = """GET http://127.0.0.1:5034/ HTTP/1.1
                 Proxy-Protocol:uproxy-v1\n\n"""
 
 with socket.create_connection((hostname, proxy_port)) as sock:
-    with ssl.wrap_socket(sock, ca_certs="certs.pem", cert_reqs=ssl.CERT_REQUIRED, server_side=False) as ssock:
-    # with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+    with context.wrap_socket(sock, server_hostname=hostname) as ssock:
         print(repr(ssock.getpeername()))
         print(ssock.cipher())
         print(pprint.pformat(ssock.getpeercert()))
