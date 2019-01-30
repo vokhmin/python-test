@@ -5,3 +5,5 @@
 
 /__pycache__
 certs.pem
+*_pb2.py
+*_pb2.bak
