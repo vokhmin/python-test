@@ -22,72 +22,58 @@ To start the script use python3:
 the tail of the output should look like:
 
 ```
-    Connected to RPC server TLSv1.2
-    Received a message:
-    payloadType: 990
-    payload: ""
+plantId: "????????????"
+environmentName: "???"
+login: ????
+passwordHash: "????????????????????????"
 
-    Received a Hello event:
 
-    Received a message:
-    payloadType: 302
-    payload: "\020\001\020\002\020\003\020\004\020\005\020\006\020\007\020\010\020\t\020\013\020\014\020\r\020\016\020\024\020\025\020\026\020\027\020 \020(\020)\0202\0203\020x\020\202\001\020\214\001\020\226\001\020\227\001\020\240\001\020\241\001\020\252\001\020\264\001\020\302\001\020\303\001\020\305\001\020\306\001\020\310\001\020\311\001\020\312\001\020\313\001\020\314\001\020\315\001\020\316\001\020\317\001\020\320\001\020\321\001\020\322\001\020\323\001\020\324\001\020\325\001\020\326\001\020\327\001\020\330\001"
-    clientMsgId: "any-random-string"
+('51.15.17.7', 5011)
+('ECDHE-RSA-AES128-GCM-SHA256', 'TLSv1/SSLv3', 128)
+{'OCSP': ('http://ocsp.comodoca.com',),
+ ... ,
+ 'version': 3}
+Connected to RPC server TLSv1.2
+Received a message:
+payloadType: 990
+payload: ""
 
-    Received a ManagerAuth Response:
-    permission: ROLE_TRADER_READ
-    permission: ROLE_TRADER_CREATE
-    permission: ROLE_TRADER_EDIT
-    permission: ROLE_TRADER_DELETE
-    permission: ROLE_TRADER_CASHIER_FAKE
-    permission: ROLE_TRADER_CHANGE_PASSWORD
-    permission: ROLE_TRADER_VIEWALL
-    permission: ROLE_TRADER_PHONE_TRADING
-    permission: ROLE_TRADER_BONUS_CASHIER
-    permission: ROLE_MANAGER_CREATE
-    permission: ROLE_MANAGER_EDIT
-    permission: ROLE_MANAGER_DELETE
-    permission: ROLE_MANAGER_CHANGE_PASSWORD
-    permission: ROLE_GROUP_READ
-    permission: ROLE_GROUP_CREATE
-    permission: ROLE_GROUP_EDIT
-    permission: ROLE_GROUP_DELETE
-    permission: ROLE_PRICE_STREAM_EDIT
-    permission: ROLE_SYMBOL_READ
-    permission: ROLE_SYMBOL_EDIT
-    permission: ROLE_SETTINGS_READ
-    permission: ROLE_SETTINGS_EDIT
-    permission: ROLE_JOURNAL_READ
-    permission: ROLE_ORDER_READ
-    permission: ROLE_POSITION_READ
-    permission: ROLE_TRADING_HISTORY_READ
-    permission: ROLE_TRADING_HISTORY_EXPORT
-    permission: ROLE_LIQUIDITY_READ
-    permission: ROLE_LIQUIDITY_EDIT
-    permission: ROLE_EXPOSURE_READ
-    permission: ROLE_INTEGRATION_READ
-    permission: ROLE_PRICE_FILTER_EDIT
-    permission: ROLE_TRADER_INTRODUCING_BROKER
-    permission: ROLE_GUI_SETTINGS_EDIT
-    permission: ROLE_REPORT
-    permission: ROLE_DYNAMIC_LEVERAGE_EDIT
-    permission: ROLE_ENTITY_BOOK_READ
-    permission: ROLE_FUNNEL_READ
-    permission: ROLE_FUNNEL_EDIT
-    permission: ROLE_HOOK_READ
-    permission: ROLE_HOOK_EDIT
-    permission: ROLE_WITHDRAWAL_REQUEST_READ
-    permission: ROLE_WITHDRAWAL_REQUEST_EDIT
-    permission: ROLE_KYC_READ
-    permission: ROLE_KYC_EDIT
-    permission: ROLE_MARKETING_LINKS_READ
-    permission: ROLE_MARKETING_LINKS_EDIT
-    permission: ROLE_WITHDRAWAL_APPROVE_SETTINGS_READ
-    permission: ROLE_WITHDRAWAL_APPROVE_SETTINGS_EDIT
-    permission: ROLE_OPERATIONAL_WALLET_READ
-    permission: ROLE_OPERATIONAL_WALLET_EDIT
-    permission: ROLE_TRADING_ON_BEHALF
+Received a Hello Event:
 
-    Communication with RPC server is completed
+Try to send the request:
+payloadType: 301
+payload: "\022\020spotwarecxchange\032\001x \277N* 39ad2a1609b0e7f7a7a6537b54aae7d9"
+clientMsgId: "any-random-string"
+
+Received a message:
+payloadType: 302
+payload: "\020\001\020\002\020\006\020\007\020\024\020x\020\202\001\020\214\001\020\226\001"
+clientMsgId: "any-random-string"
+
+Received a ManagerAuth Response:
+permission: ROLE_TRADER_READ
+permission: ROLE_TRADER_CREATE
+permission: ROLE_TRADER_CHANGE_PASSWORD
+permission: ROLE_TRADER_VIEWALL
+permission: ROLE_GROUP_READ
+permission: ROLE_JOURNAL_READ
+permission: ROLE_ORDER_READ
+permission: ROLE_POSITION_READ
+permission: ROLE_TRADING_HISTORY_READ
+
+Try to send the request:
+payloadType: 850
+payload: "\022\020spotwarecxchange\032\001x \277N* 39ad2a1609b0e7f7a7a6537b54aae7d9"
+clientMsgId: "any-random-string-2"
+
+Received a message:
+payloadType: 851
+payload: "\0222f85566c2-9004-40b1-96f3-f869ea94cf96-1548850137968"
+clientMsgId: "any-random-string-2"
+
+Received a ManagerAuth Response:
+token: "f85566c2-9004-40b1-96f3-f869ea94cf96-1548850137968"
+
+Communication with RPC server is completed
 ```
 
